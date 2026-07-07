@@ -5,6 +5,9 @@ class Settings(BaseSettings):
     app_name: str = "APIShield"
     app_version: str = "0.1.0"
     debug: bool = True
+    
+    mongodb_url: str
+    database_name: str
 
     model_config = SettingsConfigDict(
         env_file=".env",
