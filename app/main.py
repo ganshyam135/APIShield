@@ -7,24 +7,24 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from app.api.health import router as health_router
 from app.core.config import settings
 from app.db import database
-
+from app.core.logging import logger
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("Connecting to MongoDB...")
+    logger.info("Connecting to MongoDB...")
 
     database.client = AsyncIOMotorClient(settings.mongodb_url)
     database.database = database.client[settings.database_name]
     
-    print("MongoDB Connected!")
+    logger.info("MongoDB Connected!")
 
     yield
 
-    print("Closing MongoDB connection...")
+    logger.info("Closing MongoDB connection...")
 
     database.client.close()
 
-    print("MongoDB Closed")
+    logger.info("MongoDB Closed")
 
 
 app = FastAPI(
