@@ -8,6 +8,7 @@ from app.api.health import router as health_router
 from app.core.config import settings
 from app.db import database
 from app.core.logging import logger
+from app.api.api_keys import router as api_key_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -35,3 +36,6 @@ app = FastAPI(
 )
 
 app.include_router(health_router)
+app.include_router(api_key_router)
+
+
