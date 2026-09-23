@@ -1,7 +1,7 @@
 from datetime import datetime, UTC
 
 from app.utils.security import generate_api_key, hash_api_key
-from app.db.database import get_api_keys_collection
+from app.repositories.api_key_repository import api_key_repository
 
 
 class APIKeyService:
@@ -19,9 +19,7 @@ class APIKeyService:
             "is_active": True,
         }
 
-        collection = get_api_keys_collection()
-
-        result = await collection.insert_one(document)
+        result = await api_key_repository.create(document)
         
         return {
             "id": str(result.inserted_id), 
