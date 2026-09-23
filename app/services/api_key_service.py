@@ -24,10 +24,9 @@ class APIKeyService:
         result = await collection.insert_one(document)
         
         return {
-            "id": 1,
+            "id": str(result.inserted_id), 
             "name": name,
             "api_key": api_key,
-            "key_hash": api_key_hash, #testing, will remove when connecting to MongoDB
         }
     
 api_key_service = APIKeyService()

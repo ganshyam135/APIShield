@@ -9,6 +9,6 @@ class APIKeyCreateRequest(BaseModel):
     )
 
 class APIKeyResponse(BaseModel):
-    id: int
+    id: str
     name: str
     api_key: str
