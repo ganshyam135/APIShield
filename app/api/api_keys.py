@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from app.schemas.api_key import (
     APIKeyCreateRequest,
     APIKeyResponse,
+    APIKeyListItem,
 )
 
 from app.services.api_key_service import api_key_service
@@ -15,3 +16,7 @@ router = APIRouter(
 @router.post("", response_model=APIKeyResponse, status_code=201)
 async def create_api_key(request: APIKeyCreateRequest):
     return await api_key_service.create_api_key(request.name)
+
+@router.get("", response_model=list[APIKeyListItem])
+async def list_api_keys():
+    return await api_key_service.list_api_keys()
