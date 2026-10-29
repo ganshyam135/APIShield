@@ -1,5 +1,7 @@
 from app.db.database import get_api_keys_collection
 
+from bson import ObjectId
+
 
 class APIKeyRepository:
 
@@ -25,6 +27,17 @@ class APIKeyRepository:
         )
 
         return await cursor.to_list(length=limit)
+
+    async def get_by_id(self, key_id: str) -> dict | None:
+        if not ObjectId.is_valid(key_id):
+            return None
+
+        collection = get_api_keys_collection()
+
+        return await collection.find_one(
+            {"_id": ObjectId(key_id)},
+            {"api_key_hash": 0},
+        )
 
 
 api_key_repository = APIKeyRepository()

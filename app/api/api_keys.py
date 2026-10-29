@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, HTTPException
 
 from typing import Annotated
 
@@ -28,3 +28,15 @@ async def list_api_keys(
         skip=skip,
         limit=limit,
     )
+
+@router.get("/{key_id}", response_model=APIKeyListItem)
+async def get_api_key(key_id: str):
+    api_key = await api_key_service.get_api_key(key_id)
+
+    if api_key is None:
+        raise HTTPException(
+            status_code=404,
+            detail="API key not found",
+        )
+
+    return api_key

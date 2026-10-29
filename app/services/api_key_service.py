@@ -47,6 +47,20 @@ class APIKeyService:
             }
             for document in documents
         ]
+
+    async def get_api_key(self, key_id: str) -> dict | None:
+        document = await api_key_repository.get_by_id(key_id)
+
+        if document is None:
+            return None
+
+        return {
+            "id": str(document["_id"]),
+            "name": document["name"],
+            "created_at": document["created_at"],
+            "last_used_at": document["last_used_at"],
+            "is_active": document["is_active"],
+        }
     
 api_key_service = APIKeyService()
 
