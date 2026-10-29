@@ -27,8 +27,15 @@ class APIKeyService:
             "api_key": api_key,
         }
 
-    async def list_api_keys(self) -> list[dict]:
-        documents = await api_key_repository.list_all()
+    async def list_api_keys(
+    self,
+    skip: int = 0,
+    limit: int = 10,
+) -> list[dict]:
+        documents = await api_key_repository.list_all(
+            skip=skip,
+            limit=limit,
+        )
 
         return [
             {

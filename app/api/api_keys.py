@@ -1,4 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
+
+from typing import Annotated
 
 from app.schemas.api_key import (
     APIKeyCreateRequest,
@@ -18,5 +20,11 @@ async def create_api_key(request: APIKeyCreateRequest):
     return await api_key_service.create_api_key(request.name)
 
 @router.get("", response_model=list[APIKeyListItem])
-async def list_api_keys():
-    return await api_key_service.list_api_keys()
+async def list_api_keys(
+    skip: Annotated[int, Query(ge=0)] = 0,
+    limit: Annotated[int, Query(ge=1, le=100)] = 10,
+):
+    return await api_key_service.list_api_keys(
+        skip=skip,
+        limit=limit,
+    )

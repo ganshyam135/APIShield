@@ -10,15 +10,21 @@ class APIKeyRepository:
 
         return result
 
-    async def list_all(self) -> list[dict]:
+    async def list_all(
+    self,
+    skip: int = 0,
+    limit: int = 10,
+) -> list[dict]:
         collection = get_api_keys_collection()
 
-        cursor = collection.find(
-            {},
-            {"api_key_hash": 0},
-        ).sort("created_at", -1)
+        cursor = (
+            collection.find({}, {"api_key_hash": 0})
+            .sort("created_at", -1)
+            .skip(skip)
+            .limit(limit)
+        )
 
-        return await cursor.to_list(length=100)
+        return await cursor.to_list(length=limit)
 
 
 api_key_repository = APIKeyRepository()
